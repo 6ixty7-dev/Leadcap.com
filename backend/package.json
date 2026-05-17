@@ -1,0 +1,41 @@
+{
+  "name": "lead-intelligence-backend",
+  "version": "1.0.0",
+  "description": "Lead Intelligence OS - Backend API",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "leads",
+    "intelligence",
+    "crm"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "axios": "^1.16.1",
+    "cors": "^2.8.5",
+    "csv-parser": "^3.0.0",
+    "dotenv": "^16.4.0",
+    "express": "^4.21.0",
+    "nodemailer": "^8.0.7",
+    "playwright": "^1.60.0",
+    "sql.js": "^1.11.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^22.0.0",
+    "@types/nodemailer": "^8.0.0",
+    "@types/sql.js": "^1.4.11",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.22.0",
+    "typescript": "^5.7.0"
+  }
+}

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lead OS Collector</title>
+  <style>
+    :root {
+      --bg: #09090b;
+      --card-bg: rgba(24, 24, 27, 0.6);
+      --border: rgba(39, 39, 42, 0.7);
+      --indigo: #6366f1;
+      --indigo-glow: rgba(99, 102, 241, 0.15);
+      --text: #f4f4f5;
+      --text-muted: #a1a1aa;
+      --emerald: #10b981;
+      --red: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      width: 360px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      padding: 16px;
+      overflow-x: hidden;
+    }
+
+    /* Container */
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      background: linear-gradient(to right, #ffffff, #a1a1aa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-subtitle {
+      font-size: 9px;
+      font-weight: bold;
+      color: var(--indigo);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 2px;
+    }
+
+    /* Server Status Badge */
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(24, 24, 27, 0.8);
+      border: 1px solid var(--border);
+      padding: 4px 8px;
+      border-radius: 9999px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--red);
+      box-shadow: 0 0 8px var(--red);
+      transition: all 0.3s ease;
+    }
+
+    .status-dot.connected {
+      background: var(--emerald);
+      box-shadow: 0 0 8px var(--emerald);
+    }
+
+    /* Info card */
+    .info-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--text-muted);
+    }
+
+    .info-card strong {
+      color: var(--text);
+    }
+
+    /* Actions Panel */
+    .action-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .input-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(9, 9, 11, 0.5);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 4px 8px;
+    }
+
+    .input-group label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .input-group input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 600;
+      text-align: right;
+      padding: 4px;
+      width: 50px;
+      outline: none;
+    }
+
+    /* Buttons */
+    .btn {
+      width: 100%;
+      background: var(--indigo);
+      border: none;
+      color: white;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+    }
+
+    .btn:hover {
+      background: #4f46e5;
+      transform: translateY(-1px);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn-secondary {
+      background: rgba(24, 24, 27, 0.8);
+      border: 1px solid var(--border);
+      color: var(--text);
+      box-shadow: none;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(39, 39, 42, 0.8);
+      border-color: rgba(99, 102, 241, 0.4);
+    }
+
+    /* Leads counter display */
+    .leads-stats {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(99, 102, 241, 0.08);
+      border: 1px dashed rgba(99, 102, 241, 0.3);
+      padding: 12px;
+      border-radius: 14px;
+    }
+
+    .stats-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .stats-count {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--indigo);
+    }
+
+    /* Leads List Preview */
+    .list-preview {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 180px;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 8px;
+      background: rgba(9, 9, 11, 0.4);
+    }
+
+    .lead-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      background: rgba(24, 24, 27, 0.5);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px;
+      font-size: 11px;
+    }
+
+    .lead-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .lead-item-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 9px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Loading Spinner */
+    .spinner {
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-left-color: white;
+      border-radius: 50%;
+      width: 14px;
+      height: 14px;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Success Message */
+    .success-alert {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      padding: 10px;
+      border-radius: 12px;
+      color: var(--emerald);
+      font-size: 12px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="brand">
+        <span class="brand-title">Lead Intelligence OS</span>
+        <span class="brand-subtitle">Collector Collector</span>
+      </div>
+      <div class="status-badge">
+        <span id="status-dot" class="status-dot"></span>
+        <span id="status-text">Checking CRM...</span>
+      </div>
+    </div>
+
+    <!-- Active Tab Warning / Instructions -->
+    <div id="tab-warning" class="info-card" style="display: none;">
+      ⚠️ Please open <strong>Google Maps</strong> and perform a local search (e.g. <i>"Salons in Thrissur"</i>) to start scraping leads.
+    </div>
+
+    <!-- Stats Display -->
+    <div class="leads-stats">
+      <span class="stats-label" id="status-display">Leads Collected</span>
+      <span class="stats-count" id="leads-count">0</span>
+    </div>
+
+    <!-- List Preview (hidden when empty) -->
+    <div id="list-preview" class="list-preview" style="display: none;">
+      <!-- Populated via JS -->
+    </div>
+
+    <!-- Actions Panel -->
+    <div class="action-panel" id="actions-panel">
+      <div class="input-group">
+        <label for="max-leads">Max Scroll Leads</label>
+        <input type="number" id="max-leads" min="5" max="200" value="50">
+      </div>
+
+      <button id="btn-collect" class="btn">
+        <span>⚡ Collect & Scroll</span>
+      </button>
+
+      <button id="btn-scrape-current" class="btn btn-secondary">
+        <span>Scrape Visible Cards</span>
+      </button>
+
+      <button id="btn-import" class="btn" style="background: var(--emerald); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); display: none;">
+        <span>🚀 Import to Lead CRM</span>
+      </button>
+    </div>
+
+    <!-- Success Feedback Container -->
+    <div id="success-container" style="display: none;">
+      <div class="success-alert">
+        ✔️ Scraped leads successfully imported to CRM! They are now in queue for deep AI and Validation analysis.
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

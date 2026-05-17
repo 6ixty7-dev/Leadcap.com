@@ -1,0 +1,82 @@
+# ============================================================
+# Lead Intelligence OS — Root .gitignore
+# ============================================================
+
+# Dependencies
+node_modules/
+backend/node_modules/
+frontend/node_modules/
+
+# Next.js Build Output
+.next/
+frontend/.next/
+
+# Backend Build & Distribution
+dist/
+backend/dist/
+build/
+backend/build/
+frontend/build/
+
+# SQLite Database Files
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+backend/data/*.db
+backend/data/*.db-journal
+backend/data/*.sqlite
+backend/data/*.sqlite3
+
+# Environment Variables / Secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+backend/.env
+backend/.env.local
+frontend/.env
+frontend/.env.local
+
+# Logs
+logs/
+backend/logs/
+frontend/logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Diagnostic & Cache Files
+.eslintcache
+.parcel-cache
+.turbo/
+*.tsbuildinfo
+frontend/tsconfig.tsbuildinfo
+backend/tsconfig.tsbuildinfo
+
+# Playwright Test Reports
+playwright-report/
+test-results/
+backend/playwright-report/
+backend/test-results/
+
+# Temporary / OS / Editor files
+temp/
+tmp/
+.temp/
+.tmp/
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
